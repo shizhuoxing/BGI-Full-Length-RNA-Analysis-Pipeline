@@ -6,7 +6,7 @@ Here, we provide a command line's version bioinformatics pipeline for PacBio Iso
 
 # Dependencies   
 SMRTlink 6.0 or later   
-`we suggest install in command line only model:``smrtlink-*.run --rootdir smrtlink --smrttools-only`
+`we suggest install in command line only model:``smrtlink-*.run --rootdir smrtlink --smrttools-only`   
 blast   
 R
 
