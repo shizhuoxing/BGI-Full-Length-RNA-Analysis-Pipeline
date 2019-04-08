@@ -14,12 +14,15 @@ Dependency
 SMRTlink 6.0   
 blast   
 
-*/smrtlink/smrtcmds/bin/dataset create --type SubreadSet */raw.subreadset.xml *1/m54269_190219_090012.subreads.bam
-*/smrtlink/smrtcmds/bin/dataset split --zmws --chunks 200 */raw.subreadset.xml
+*/smrtlink/smrtcmds/bin/dataset create --type SubreadSet */raw.subreadset.xml */m54269_190219_090012.subreads.bam
+*/smrtlink/smrtcmds/bin/dataset split --zmws --chunks 3 */raw.subreadset.xml
 
-perl */creat_chunk_rtc.pl */raw.chunk96.subreadset.xml */CHUNK96 > *CHUNK96/resolved-tool-contract-96.json && 
-
-*/smrtlink/smrtcmds/bin/ccs --resolved-tool-contract */CHUNK96/resolved-tool-contract-96.json 
+perl */creat_chunk_rtc.pl */raw.chunk1.subreadset.xml */CHUNK1 > *CHUNK1/resolved-tool-contract-1.json   
+*/smrtlink/smrtcmds/bin/ccs --resolved-tool-contract */CHUNK1/resolved-tool-contract-1.json   
+perl */creat_chunk_rtc.pl */raw.chunk2.subreadset.xml */CHUNK2 > *CHUNK2/resolved-tool-contract-1.json   
+*/smrtlink/smrtcmds/bin/ccs --resolved-tool-contract */CHUNK2/resolved-tool-contract-1.json  
+perl */creat_chunk_rtc.pl */raw.chunk3.subreadset.xml */CHUNK3 > *CHUNK96/resolved-tool-contract-3.json   
+*/smrtlink/smrtcmds/bin/ccs --resolved-tool-contract */CHUNK3/resolved-tool-contract-3.json  
 
 */smrtlink/smrtcmds/bin/bamtools convert -format fastq -in */CHUNK96/ccs.bam -out */CHUNK96/ccs.fq && 
 
