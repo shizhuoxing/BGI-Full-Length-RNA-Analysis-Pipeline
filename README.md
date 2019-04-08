@@ -13,6 +13,7 @@ Merge and quantify
 Dependency   
 SMRTlink 6.0   
 blast   
+R
 
 */smrtlink/smrtcmds/bin/dataset create --type SubreadSet */raw.subreadset.xml */m54269_190219_090012.subreads.bam
 */smrtlink/smrtcmds/bin/dataset split --zmws --chunks 3 */raw.subreadset.xml
