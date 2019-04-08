@@ -1,0 +1,38 @@
+{
+    "driver": {
+        "env": {},
+        "exe": "ccs --resolved-tool-contract",
+        "serialization": "json"
+    },
+    "resolved_tool_contract": {
+        "_comment": "Created by pbcommand v0.4.11",
+        "input_files": [
+            "path/x.chunkN.subreadset.xml"
+        ],
+        "is_distributed": false,
+        "log_level": "INFO",
+        "nproc": 4,
+        "options": {
+            "pbccs.task_options.by_strand": false,
+            "pbccs.task_options.max_drop_fraction": 0.8,
+            "pbccs.task_options.max_length": 20000,
+            "pbccs.task_options.min_length": 100,
+            "pbccs.task_options.min_passes": 0,
+            "pbccs.task_options.min_predicted_accuracy": 0.75,
+            "pbccs.task_options.min_read_score": 0.65,
+            "pbccs.task_options.min_snr": 3.75,
+            "pbccs.task_options.min_zscore": -9999.0,
+            "pbccs.task_options.model_path": "",
+            "pbccs.task_options.model_spec": "",
+            "pbccs.task_options.polish": true,
+            "pbccs.task_options.report_file": "ccs_report.txt",
+            "pbccs.task_options.num_threads": 8
+        },
+        "output_files": [
+            "path/ccs.consensusreadset.xml"
+        ],
+        "resources": [],
+        "task_type": "pbsmrtpipe.task_types.standard",
+        "tool_contract_id": "pbccs.tasks.ccs"
+    }
+}
