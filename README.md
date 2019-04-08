@@ -17,11 +17,11 @@ blast
 */smrtlink/smrtcmds/bin/dataset create --type SubreadSet */raw.subreadset.xml */m54269_190219_090012.subreads.bam
 */smrtlink/smrtcmds/bin/dataset split --zmws --chunks 3 */raw.subreadset.xml
 
-perl */creat_chunk_rtc.pl */raw.chunk1.subreadset.xml */CHUNK1 > *CHUNK1/resolved-tool-contract-1.json   
+perl creat_chunk_rtc.pl */raw.chunk1.subreadset.xml */CHUNK1 > *CHUNK1/resolved-tool-contract-1.json   
 */smrtlink/smrtcmds/bin/ccs --resolved-tool-contract */CHUNK1/resolved-tool-contract-1.json   
-perl */creat_chunk_rtc.pl */raw.chunk2.subreadset.xml */CHUNK2 > *CHUNK2/resolved-tool-contract-1.json   
+perl creat_chunk_rtc.pl */raw.chunk2.subreadset.xml */CHUNK2 > *CHUNK2/resolved-tool-contract-1.json   
 */smrtlink/smrtcmds/bin/ccs --resolved-tool-contract */CHUNK2/resolved-tool-contract-1.json  
-perl */creat_chunk_rtc.pl */raw.chunk3.subreadset.xml */CHUNK3 > *CHUNK96/resolved-tool-contract-3.json   
+perl creat_chunk_rtc.pl */raw.chunk3.subreadset.xml */CHUNK3 > *CHUNK96/resolved-tool-contract-3.json   
 */smrtlink/smrtcmds/bin/ccs --resolved-tool-contract */CHUNK3/resolved-tool-contract-3.json  
 
 */smrtlink/smrtcmds/bin/bamtools convert -format fastq -in */CHUNK96/ccs.bam -out */CHUNK96/ccs.fq && 
@@ -32,9 +32,9 @@ awk 'NR%4 == 1 {print ">" substr($0,2)} NR%4 == 2 {print}' */CHUNK96/ccs.fq > */
 
 */blastn -query */CHUNK96/ccs.fa -db */blastdb/gi.primer.fa -outfmt 7 -word_size 5 > */CHUNK96/mapped.m7 && 
 
-perl */classify_by_primer.pl */CHUNK96/mapped.m7 */CHUNK96/ccs.fa */CHUNK96/ && 
+perl classify_by_primer.pl */CHUNK96/mapped.m7 */CHUNK96/ccs.fa */CHUNK96/ && 
 
 */smrtlink/smrtcmds/bin/samtools view */CHUNK96/ccs.bam > */CHUNK96/ccs.sam && 
 
-perl */fl_to_sam.pl */CHUNK96/ccs.sam */CHUNK96/isoseq_flnc.fasta > */CHUNK96/isoseq_flnc.sam && 
+perl fl_to_sam.pl */CHUNK96/ccs.sam */CHUNK96/isoseq_flnc.fasta > */CHUNK96/isoseq_flnc.sam && 
 
