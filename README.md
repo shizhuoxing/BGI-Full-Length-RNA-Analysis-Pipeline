@@ -15,16 +15,21 @@ SMRTlink 6.0
 blast   
 R
 
+## Step1 chunking raw data
+If we
 ```
 */smrtlink/smrtcmds/bin/dataset create --type SubreadSet */raw.subreadset.xml */m54269_190219_090012.subreads.bam
 */smrtlink/smrtcmds/bin/dataset split --zmws --chunks 3 */raw.subreadset.xml
-
+```
+## Step2 CCS
+```
 perl creat_chunk_rtc.pl */raw.chunk1.subreadset.xml */CHUNK1 > *CHUNK1/resolved-tool-contract-1.json   
 */smrtlink/smrtcmds/bin/ccs --resolved-tool-contract */CHUNK1/resolved-tool-contract-1.json   
 perl creat_chunk_rtc.pl */raw.chunk2.subreadset.xml */CHUNK2 > *CHUNK2/resolved-tool-contract-1.json   
 */smrtlink/smrtcmds/bin/ccs --resolved-tool-contract */CHUNK2/resolved-tool-contract-1.json  
 perl creat_chunk_rtc.pl */raw.chunk3.subreadset.xml */CHUNK3 > *CHUNK96/resolved-tool-contract-3.json   
 */smrtlink/smrtcmds/bin/ccs --resolved-tool-contract */CHUNK3/resolved-tool-contract-3.json  
+```
 
 */smrtlink/smrtcmds/bin/bamtools convert -format fastq -in */CHUNK96/ccs.bam -out */CHUNK96/ccs.fq && 
 
