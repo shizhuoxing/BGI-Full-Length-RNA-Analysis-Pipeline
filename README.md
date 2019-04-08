@@ -9,3 +9,25 @@ Chunk CCS
 Classify by primer   
 IsoSeq3   
 Merge and quantify
+
+*/smrtlink/smrtcmds/bin/dataset create --type SubreadSet */raw.subreadset.xml *1/m54269_190219_090012.subreads.bam
+*/smrtlink/smrtcmds/bin/dataset split --zmws --chunks 200 */raw.subreadset.xml
+
+perl */creat_chunk_rtc.pl */raw.chunk96.subreadset.xml */CHUNK96 > *CHUNK96/resolved-tool-contract-96.json && 
+
+*/smrtlink/smrtcmds/bin/ccs --resolved-tool-contract */CHUNK96/resolved-tool-contract-96.json 
+
+*/smrtlink/smrtcmds/bin/bamtools convert -format fastq -in */CHUNK96/ccs.bam -out */CHUNK96/ccs.fq && 
+
+awk 'NR%4 == 1 {print ">" substr($0,2)} NR%4 == 2 {print}' */CHUNK96/ccs.fq > */CHUNK96/ccs.fa && 
+
+*/smrtlink/smrtcmds/bin/samtools view */CHUNK96/ccs.bam | awk '{print $1"\t"length($11)"\t"$13"\t"$14}' | sed 's/np:i://' | sed 's/rq:f://' > */CHUNK96/ccs.stat && 
+
+*/blastn -query */CHUNK96/ccs.fa -db */blastdb/gi.primer.fa -outfmt 7 -word_size 5 > */CHUNK96/mapped.m7 && 
+
+perl */classify_by_primer.pl */CHUNK96/mapped.m7 */CHUNK96/ccs.fa */CHUNK96/ && 
+
+*/smrtlink/smrtcmds/bin/samtools view */CHUNK96/ccs.bam > */CHUNK96/ccs.sam && 
+
+perl */fl_to_sam.pl */CHUNK96/ccs.sam */CHUNK96/isoseq_flnc.fasta > */CHUNK96/isoseq_flnc.sam && 
+
