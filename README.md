@@ -37,3 +37,6 @@ perl classify_by_primer.pl mapped.m7 ccs.fa ./
 samtools view ccs.bam > ccs.sam 
 perl fl_to_sam.pl ccs.sam isoseq_flnc.fasta > isoseq_flnc.sam 
 ```
+## Step4 isoform cluster
+
+## Step5 isoform expression quntify
