@@ -40,10 +40,11 @@ blastn -query ccs.fa -db primer.fa -outfmt 7 -word_size 5 > mapped.m7
 ### 3.3) classify ccs by primer
 ```
 perl classify_by_primer.pl mapped.m7 ccs.fa ./ 
-perl fl_to_sam.pl ccs.sam isoseq_flnc.fasta > isoseq_flnc.sam 
 ```
 ## Step4 isoform cluster
-
+```
+perl fl_to_sam.pl ccs.sam isoseq_flnc.fasta > isoseq_flnc.sam 
+```
 ## Step5 isoform expression quntify
 
 
