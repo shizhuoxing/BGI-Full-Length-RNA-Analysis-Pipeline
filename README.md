@@ -40,3 +40,9 @@ perl fl_to_sam.pl ccs.sam isoseq_flnc.fasta > isoseq_flnc.sam
 ## Step4 isoform cluster
 
 ## Step5 isoform expression quntify
+
+
+# Contact
+If you have any questions, encounter problems or potential bugs, don’t hesitate to contact us. Either report issues on github or write an email to:
+
+Zhuoxing Shi - shizhuoxing@bgi.com
