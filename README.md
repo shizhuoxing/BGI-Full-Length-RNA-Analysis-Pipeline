@@ -4,45 +4,36 @@
 As we all knows, with the progress of single molecule sequencing technology, full-length transcript sequencing will become more popular. Compared to the second generation sequencing technology, the three generations sequencing technology can detect full-length transcript from 5-end to polyA tail, this enables us to take the more accurate way to quantifying gene and isoform expression, and can take more accurate way to research isoform structure, such as alternative splicing(AS), alternative polyadenylation(APA), allele specific expression(ASE), fusion gene, UTR length and UTR secondary structure, etc.   
 Here, we provide a bioinformatics pipeline for PacBio IsoSeq data analysis from raw subreads.bam. This pipeline contain quality control, basic statistics, full-length transcripts identification, clustering, error correction and isoform quantification.   
 
-`SMRTlink   
-Chunk CCS   
-Classify by primer   
-IsoSeq3   
-Merge and quantify`
-
 # Dependencies   
 SMRTlink 6.0 or later  
 blast   
 R
 
 # Usage
+set `smrtlink/smrtcmds/bin` `blast` to you path.
+
 ## Step1 raw data chunking
 Chunk and parallel processing of the raw data can significantly reduce computing time.
 ```
-*/smrtlink/smrtcmds/bin/dataset create --type SubreadSet */raw.subreadset.xml */m54269_190219_090012.subreads.bam
-*/smrtlink/smrtcmds/bin/dataset split --zmws --chunks 3 */raw.subreadset.xml
+dataset create --type SubreadSet raw.subreadset.xml *.subreads.bam
+dataset split --zmws --chunks 3 raw.subreadset.xml
 ```
 ## Step2 CCS for each chunk
 ```
-perl creat_chunk_rtc.pl */raw.chunk1.subreadset.xml */CHUNK1 > *CHUNK1/resolved-tool-contract-1.json   
-*/smrtlink/smrtcmds/bin/ccs --resolved-tool-contract */CHUNK1/resolved-tool-contract-1.json   
-perl creat_chunk_rtc.pl */raw.chunk2.subreadset.xml */CHUNK2 > *CHUNK2/resolved-tool-contract-1.json   
-*/smrtlink/smrtcmds/bin/ccs --resolved-tool-contract */CHUNK2/resolved-tool-contract-1.json  
-perl creat_chunk_rtc.pl */raw.chunk3.subreadset.xml */CHUNK3 > *CHUNK96/resolved-tool-contract-3.json   
-*/smrtlink/smrtcmds/bin/ccs --resolved-tool-contract */CHUNK3/resolved-tool-contract-3.json  
+perl creat_chunk_rtc.pl raw.chunk1.subreadset.xml ./ > resolved-tool-contract-1.json   
+ccs --resolved-tool-contract resolved-tool-contract-1.json   
+perl creat_chunk_rtc.pl raw.chunk2.subreadset.xml ./ > resolved-tool-contract-1.json   
+ccs --resolved-tool-contract resolved-tool-contract-1.json  
+perl creat_chunk_rtc.pl raw.chunk3.subreadset.xml ./ > resolved-tool-contract-3.json   
+ccs --resolved-tool-contract resolved-tool-contract-3.json  
 ```
-
-*/smrtlink/smrtcmds/bin/bamtools convert -format fastq -in */CHUNK96/ccs.bam -out */CHUNK96/ccs.fq && 
-
-awk 'NR%4 == 1 {print ">" substr($0,2)} NR%4 == 2 {print}' */CHUNK96/ccs.fq > */CHUNK96/ccs.fa && 
-
-*/smrtlink/smrtcmds/bin/samtools view */CHUNK96/ccs.bam | awk '{print $1"\t"length($11)"\t"$13"\t"$14}' | sed 's/np:i://' | sed 's/rq:f://' > */CHUNK96/ccs.stat && 
-
-*/blastn -query */CHUNK96/ccs.fa -db */blastdb/gi.primer.fa -outfmt 7 -word_size 5 > */CHUNK96/mapped.m7 && 
-
-perl classify_by_primer.pl */CHUNK96/mapped.m7 */CHUNK96/ccs.fa */CHUNK96/ && 
-
-*/smrtlink/smrtcmds/bin/samtools view */CHUNK96/ccs.bam > */CHUNK96/ccs.sam && 
-
-perl fl_to_sam.pl */CHUNK96/ccs.sam */CHUNK96/isoseq_flnc.fasta > */CHUNK96/isoseq_flnc.sam && 
+## Step3 classify ccs by primer blast
+```
+bamtools convert -format fastq -in ccs.bam -out ccs.fq 
+awk 'NR%4 == 1 {print ">" substr($0,2)} NR%4 == 2 {print}' ccs.fq > ccs.fa 
+samtools view ccs.bam | awk '{print $1"\t"length($11)"\t"$13"\t"$14}' | sed 's/np:i://' | sed 's/rq:f://' > ccs.stat 
+blastn -query ccs.fa -db ./blastdb/gi.primer.fa -outfmt 7 -word_size 5 > mapped.m7 
+perl classify_by_primer.pl mapped.m7 ccs.fa ./ 
+samtools view ccs.bam > ccs.sam 
+perl fl_to_sam.pl ccs.sam isoseq_flnc.fasta > isoseq_flnc.sam 
 ```
