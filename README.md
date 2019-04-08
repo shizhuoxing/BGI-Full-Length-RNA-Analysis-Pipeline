@@ -2,15 +2,19 @@
 *This is a Full-Length RNA Analysis pipeline developted by BGI RD group.*
 
 As we all knows, with the progress of single molecule sequencing technology, full-length transcript sequencing will become more popular. Compared to the second generation sequencing technology, the three generations sequencing technology can detect full-length transcript from 5-end to polyA tail, this enables us to take the more accurate way to quantifying gene and isoform expression, and can take more accurate way to research isoform structure, such as alternative splicing(AS), alternative polyadenylation(APA), allele specific expression(ASE), fusion gene, UTR length and UTR secondary structure, etc.   
-Here, we provide a bioinformatics pipeline for PacBio IsoSeq data analysis from raw subreads.bam. This pipeline contain quality control, basic statistics, full-length transcripts identification, isoform clustering, error correction and isoform quantification, and it is very easy to install and use.   
+Here, we provide a command line's version bioinformatics pipeline for PacBio IsoSeq data analysis from raw subreads.bam, this pipeline was work well in both PacBio official IsoSeq library construction protocol and BGI patented mutil-isoform in one ZMW and full-length polyA tail library construction protocol. This pipeline contain quality control, basic statistics, full-length transcripts identification, isoform clustering, error correction and isoform quantification, and it is very easy to install and use.   
 
 # Dependencies   
-SMRTlink 6.0 or later  
+SMRTlink 6.0 or later
+`we suggest install in commeline only molde smrtlink-*.run --rootdir smrtlink --smrttools-only`
 blast   
 R
 
 # Usage
-set `smrtlink/smrtcmds/bin` `blast` to you path.
+set `smrtlink` `blast` to you path.
+```
+exprot ....
+```
 
 ## Step1 raw data chunking
 Chunk and parallel processing of the raw data can significantly reduce computing time.
