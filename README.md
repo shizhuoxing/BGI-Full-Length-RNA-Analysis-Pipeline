@@ -1,7 +1,8 @@
 # Full-Length-RNA-Analysis-Best-Practice
-Full-Length RNA Analysis pipeline developted by BGI RD group.
+This is a Full-Length RNA Analysis pipeline developted by BGI RD group.
 
-As we all know, with the progress of single molecule sequencing technology, full-length transcript sequencing will become more popular.
+As we all know, with the progress of single molecule sequencing technology, full-length transcript sequencing will become more popular. Compared to the second generation sequencing technology, the three generations of sequencing technology can detect the transcription of the sequence, this enables us to take the more accurate way to gene transcription level of quantitative research, even when we get the total length of the transcription of this then we can make more accurate transcript of the structure of the research, such as alternative splicing, APA, fusion gene, ASE, UTR length and the change of secondary structure, etc.
+Here, we provide a set of bioinformatics processes for quality control, basic statistics of data, identification of full-length transcripts, clustering, error correction and quantitative analysis of off-line data from PacBio IsoSeq
 
 SMRTlink
 Chunk CCS
