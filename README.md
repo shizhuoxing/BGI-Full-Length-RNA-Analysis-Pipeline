@@ -25,13 +25,20 @@ perl creat_chunk_rtc.pl raw.chunk2.subreadset.xml ./ > resolved-tool-contract-2.
 perl creat_chunk_rtc.pl raw.chunk3.subreadset.xml ./ > resolved-tool-contract-3.json && ccs --resolved-tool-contract resolved-tool-contract-3.json  
 ```
 ## Step3 classify ccs by primer blast
+### cat ccs result in bam format from each chunk
 ```
-bamtools convert -format fastq -in ccs.bam -out ccs.fq 
-awk 'NR%4 == 1 {print ">" substr($0,2)} NR%4 == 2 {print}' ccs.fq > ccs.fa 
+ls ccs.bam > ccs.bam.list && bamtools merge ccs.bam.list
+samtools view ccs.bam > ccs.sam
+bamtools convert -format fasta -in ccs.bam -out ccs.fa 
 samtools view ccs.bam | awk '{print $1"\t"length($11)"\t"$13"\t"$14}' | sed 's/np:i://' | sed 's/rq:f://' > ccs.stat 
+```
+### make primer blast to ccs
+```
 blastn -query ccs.fa -db ./blastdb/gi.primer.fa -outfmt 7 -word_size 5 > mapped.m7 
+```
+### classify ccs by primer
+```
 perl classify_by_primer.pl mapped.m7 ccs.fa ./ 
-samtools view ccs.bam > ccs.sam 
 perl fl_to_sam.pl ccs.sam isoseq_flnc.fasta > isoseq_flnc.sam 
 ```
 ## Step4 isoform cluster
