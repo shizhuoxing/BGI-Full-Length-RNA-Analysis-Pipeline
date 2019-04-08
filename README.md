@@ -15,13 +15,13 @@ SMRTlink 6.0
 blast   
 R
 
-## Step1 chunking raw data
-If we
+## Step1 raw data chunking
+Chunk and parallel processing of the raw data can significantly reduce computing time.
 ```
 */smrtlink/smrtcmds/bin/dataset create --type SubreadSet */raw.subreadset.xml */m54269_190219_090012.subreads.bam
 */smrtlink/smrtcmds/bin/dataset split --zmws --chunks 3 */raw.subreadset.xml
 ```
-## Step2 CCS
+## Step2 CCS for each chunk
 ```
 perl creat_chunk_rtc.pl */raw.chunk1.subreadset.xml */CHUNK1 > *CHUNK1/resolved-tool-contract-1.json   
 */smrtlink/smrtcmds/bin/ccs --resolved-tool-contract */CHUNK1/resolved-tool-contract-1.json   
