@@ -25,19 +25,19 @@ perl creat_chunk_rtc.pl raw.chunk2.subreadset.xml ./ > resolved-tool-contract-2.
 perl creat_chunk_rtc.pl raw.chunk3.subreadset.xml ./ > resolved-tool-contract-3.json && ccs --resolved-tool-contract resolved-tool-contract-3.json  
 ```
 ## Step3 classify ccs by primer blast
-### cat ccs result in bam format from each chunk
+### 3.1) cat ccs result in bam format from each chunk
 ```
 ls ccs.bam > ccs.bam.list && bamtools merge ccs.bam.list
 samtools view ccs.bam > ccs.sam
 bamtools convert -format fasta -in ccs.bam -out ccs.fa 
 samtools view ccs.bam | awk '{print $1"\t"length($11)"\t"$13"\t"$14}' | sed 's/np:i://' | sed 's/rq:f://' > ccs.stat 
 ```
-### make primer blast to ccs
+### 3.2) make primer blast to ccs
 ```
 makeblastdb -in primer.fa -out primer.fa
 blastn -query ccs.fa -db primer.fa -outfmt 7 -word_size 5 > mapped.m7 
 ```
-### classify ccs by primer
+### 3.3) classify ccs by primer
 ```
 perl classify_by_primer.pl mapped.m7 ccs.fa ./ 
 perl fl_to_sam.pl ccs.sam isoseq_flnc.fasta > isoseq_flnc.sam 
