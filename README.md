@@ -5,8 +5,8 @@ As we all knows, with the progress of single molecule sequencing technology, ful
 Here, we provide a command line's version bioinformatics pipeline for PacBio IsoSeq data analysis from raw subreads.bam, this pipeline was work well in both PacBio official IsoSeq library construction protocol and BGI patented mutil-isoform in one ZMW and full-length polyA tail library construction protocol. This pipeline contain quality control, basic statistics, full-length transcripts identification, isoform clustering, error correction and isoform quantification, and it is very easy to install and use.   
 
 # Dependencies   
-SMRTlink 6.0 or later
-`we suggest install in commeline only molde smrtlink-*.run --rootdir smrtlink --smrttools-only`
+SMRTlink 6.0 or later   
+`we suggest install in command line only model:``smrtlink-*.run --rootdir smrtlink --smrttools-only`
 blast   
 R
 
