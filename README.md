@@ -10,6 +10,10 @@ Classify by primer
 IsoSeq3   
 Merge and quantify
 
+Dependency   
+SMRTlink 6.0   
+blast   
+
 */smrtlink/smrtcmds/bin/dataset create --type SubreadSet */raw.subreadset.xml *1/m54269_190219_090012.subreads.bam
 */smrtlink/smrtcmds/bin/dataset split --zmws --chunks 200 */raw.subreadset.xml
 
