@@ -106,7 +106,15 @@ If the compute nodes of your computing cluster allow it, the `--split-bam` set u
 isoseq3 polish unpolished.0.bam *.subreads.bam polished.0.bam --verbose
 ```
 ## Step5 isoform expression quantify
-
+```
+ls polished.*.bam > polished.bam.list && bamtools merge -list polished.bam.list -out polish.bam
+samtools view polish.bam > polish.sam
+perl classify_stat.pl ccs_stat.xls isoseq_flnc.polyAstat.xls > classify_stat.xls
+perl get_polish_fl.pl ccs_stat.xls polish.sam isoseq_flnc.fasta ./ SampleName LibraryName
+perl get_ccs_stat_polt.pl ./ ./
+perl get_classify_stat_polt.pl ./ ./
+perl get_cluster_stat_polt.pl ./ ./
+```
 
 # Contact
 If you have any questions, encounter problems or potential bugs, don’t hesitate to contact us. Either report issues on github or write an email to:
