@@ -7,7 +7,7 @@ Here, we provide a command line's version bioinformatics pipeline for PacBio Iso
 # Dependencies   
 * SMRTlink 6.0 or later `you can install it in light way: smrtlink-*.run --rootdir smrtlink --smrttools-only`   
 * ncbi-blast-2.2.26+ or later   
-* R-3.4.1 or later with ggplot2| gridExtra| grid
+* R-3.4.1 or later with ggplot2| gridExtra | grid
 
 # Usage
 export`smrtlink` `blast`to you path first.
