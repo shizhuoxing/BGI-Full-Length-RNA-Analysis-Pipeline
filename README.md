@@ -85,7 +85,7 @@ Usage: perl classify_by_primer.pl -blastm7 mapped.m7 -ccsfa ccs.fa -umilen 6 -mi
 Options:
         -blastm7*:              result of primer blast to ccs.fa in blast -outfmt 7 format
         -ccsfa*:                the ccs.fa you want to classify to get full-length transcript
-        -umilen*:               the UMI length in your library
+        -umilen*:               the UMI length in your library, if set to 0 means nonUMI for library construction
         -min_primerlen*:        the minimum primer alignment length in ccs.fa
         -outdir*:               output directory
 ```
