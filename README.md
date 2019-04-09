@@ -16,7 +16,15 @@ export PATH=$PATH:/smrtlink/ssmrtcmds/bin
 export PATH=$PATH:/ncbi-blast-2.2.28+/bin
 ```
 
-## Step1 raw data chunking
+## Step1 raw data statistics and chunking
+### 1.1) get raw data statistics
+```
+samtools view *.subreads.bam | awk '{print $1"\t"length($10)}' > tmp.len
+sed '1i Subreads\tLength' tmp.len > subreads.len
+perl get_polymer_len.pl subreads.len ./
+perl get_subreads_len.pl subreads.len ./
+```
+### 1.2) raw data chunking
 Chunk and parallel processing of the raw data can significantly reduce computing time.   
 If the compute nodes of your computing cluster allow it, the `--chunks` set up to >100 will have an even more significant speedup, `--chunks` set up to 100 can complete CCS analysis in few hours.
 ```
