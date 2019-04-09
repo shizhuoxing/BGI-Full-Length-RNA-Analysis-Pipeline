@@ -108,7 +108,7 @@ samtools view -bS isoseq_flnc.sam > isoseq_flnc.bam
 isoseq3 cluster isoseq_flnc.bam unpolished.bam --split-bam 3
 ```
 ### 4.3) run isoseq3 polish for each chunk of cluster result
-Chunk and parallel processing of the data can significantly reduce polishing computing time.
+Chunk and parallel processing of the data can significantly reduce polishing computing time.   
 If the compute nodes of your computing cluster allow it, the `--split-bam` set up to ~50 will have an even more significant speedup, `--split-bam` set up to 50 can complete polish analysis in 1 hours.
 ```
 isoseq3 polish unpolished.0.bam *.subreads.bam polished.0.bam --verbose
