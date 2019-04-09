@@ -74,11 +74,11 @@ GTACTCTGCGTTGATACCACTGCTTACTAGT
 ```
 perl classify_by_primer.pl mapped.m7 ccs.fa ./ 
 ```
-## Step4 isoform cluster
+## Step4 isoform clustering
 ```
 perl fl_to_sam.pl ccs.sam isoseq_flnc.fasta > isoseq_flnc.sam 
 ```
-## Step5 isoform expression quntify
+## Step5 isoform expression quantify
 
 
 # Contact
