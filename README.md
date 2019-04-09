@@ -112,6 +112,8 @@ Chunk and parallel processing of the data can significantly reduce polishing com
 If the compute nodes of your computing cluster allow it, the `--split-bam` set up to ~50 will have an even more significant speedup, `--split-bam` set up to 50 can complete polish analysis in 1 hours.
 ```
 isoseq3 polish unpolished.0.bam *.subreads.bam polished.0.bam --verbose
+isoseq3 polish unpolished.1.bam *.subreads.bam polished.1.bam --verbose
+isoseq3 polish unpolished.2.bam *.subreads.bam polished.2.bam --verbose
 ```
 ## Step5 isoform expression quantify and plotting
 ```
