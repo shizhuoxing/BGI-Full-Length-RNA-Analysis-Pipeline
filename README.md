@@ -17,7 +17,8 @@ exprot ....
 ```
 
 ## Step1 raw data chunking
-Chunk and parallel processing of the raw data can significantly reduce computing time.
+Chunk and parallel processing of the raw data can significantly reduce computing time.   
+If the compute nodes of your computing cluster allow it, the `--chunks` set up to >100 will have an even more significant speedup, `--chunks` set up to 100 can complete CCS analysis in few hours.
 ```
 dataset create --type SubreadSet raw.subreadset.xml *.subreads.bam
 dataset split --zmws --chunks 3 raw.subreadset.xml
@@ -27,6 +28,26 @@ dataset split --zmws --chunks 3 raw.subreadset.xml
 mkdir CHUNK1 && cd CHUNK1 && perl creat_chunk_rtc.pl raw.chunk1.subreadset.xml ./ > resolved-tool-contract-1.json && ccs --resolved-tool-contract resolved-tool-contract-1.json   
 mkdir CHUNK2 && cd CHUNK2 && perl creat_chunk_rtc.pl raw.chunk2.subreadset.xml ./ > resolved-tool-contract-2.json && ccs --resolved-tool-contract resolved-tool-contract-2.json  
 mkdir CHUNK3 && cd CHUNK3 && perl creat_chunk_rtc.pl raw.chunk3.subreadset.xml ./ > resolved-tool-contract-3.json && ccs --resolved-tool-contract resolved-tool-contract-3.json  
+```
+Here, `resolved-tool-contract.json` you can download in this repository must be in the same directory as the `creat_chunk_rtc.pl`.
+`resolved-tool-contract.json` contain CCS parameter as follow, you can easily modify it:
+```
+"options": {
+              "pbccs.task_options.by_strand": false,
+              "pbccs.task_options.max_drop_fraction": 0.8,
+              "pbccs.task_options.max_length": 20000,
+              "pbccs.task_options.min_length": 100,
+              "pbccs.task_options.min_passes": 0,
+              "pbccs.task_options.min_predicted_accuracy": 0.75,
+              "pbccs.task_options.min_read_score": 0.65,
+              "pbccs.task_options.min_snr": 3.75,
+              "pbccs.task_options.min_zscore": -9999.0,
+              "pbccs.task_options.model_path": "",
+              "pbccs.task_options.model_spec": "",
+              "pbccs.task_options.polish": true,
+              "pbccs.task_options.report_file": "ccs_report.txt",
+              "pbccs.task_options.num_threads": 8
+},
 ```
 ## Step3 classify CCS by primer blast
 ### 3.1) cat ccs result in bam format from each chunk
