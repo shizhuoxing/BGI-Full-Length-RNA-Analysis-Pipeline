@@ -38,7 +38,11 @@ samtools view ccs.bam | awk '{print $1"\t"length($11)"\t"$13"\t"$14}' | sed 's/n
 ```
 ### 3.2) make primer blast to ccs
 ```
-makeblastdb -in primer.fa -out primer.fa
+makeblastdb -in primer.fa -dbtype nucl
+>primer_F
+AAGCAGTGGTATCAACGCAGAGTACGGGGGGGG
+>primer_S
+GTACTCTGCGTTGATACCACTGCTTACTAGT
 blastn -query ccs.fa -db primer.fa -outfmt 7 -word_size 5 > mapped.m7 
 ```
 ### 3.3) classify ccs by primer
