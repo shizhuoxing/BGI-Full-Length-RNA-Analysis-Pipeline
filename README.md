@@ -105,7 +105,7 @@ If the compute nodes of your computing cluster allow it, the `--split-bam` set u
 ```
 isoseq3 polish unpolished.0.bam *.subreads.bam polished.0.bam --verbose
 ```
-## Step5 isoform expression quantify
+## Step5 isoform expression quantify and plotting
 ```
 ls polished.*.bam > polished.bam.list && bamtools merge -list polished.bam.list -out polish.bam
 samtools view polish.bam > polish.sam
