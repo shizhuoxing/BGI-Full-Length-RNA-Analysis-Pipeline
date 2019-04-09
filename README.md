@@ -22,30 +22,33 @@ Chunk and parallel processing of the raw data can significantly reduce computing
 dataset create --type SubreadSet raw.subreadset.xml *.subreads.bam
 dataset split --zmws --chunks 3 raw.subreadset.xml
 ```
-## Step2 CCS for each chunk
+## Step2 run CCS for each chunk
 ```
-perl creat_chunk_rtc.pl raw.chunk1.subreadset.xml ./ > resolved-tool-contract-1.json && ccs --resolved-tool-contract resolved-tool-contract-1.json   
-perl creat_chunk_rtc.pl raw.chunk2.subreadset.xml ./ > resolved-tool-contract-2.json && ccs --resolved-tool-contract resolved-tool-contract-2.json  
-perl creat_chunk_rtc.pl raw.chunk3.subreadset.xml ./ > resolved-tool-contract-3.json && ccs --resolved-tool-contract resolved-tool-contract-3.json  
+mkdir CHUNK1 && cd CHUNK1 && perl creat_chunk_rtc.pl raw.chunk1.subreadset.xml ./ > resolved-tool-contract-1.json && ccs --resolved-tool-contract resolved-tool-contract-1.json   
+mkdir CHUNK2 && cd CHUNK2 && perl creat_chunk_rtc.pl raw.chunk2.subreadset.xml ./ > resolved-tool-contract-2.json && ccs --resolved-tool-contract resolved-tool-contract-2.json  
+mkdir CHUNK3 && cd CHUNK3 && perl creat_chunk_rtc.pl raw.chunk3.subreadset.xml ./ > resolved-tool-contract-3.json && ccs --resolved-tool-contract resolved-tool-contract-3.json  
 ```
-## Step3 classify ccs by primer blast
+## Step3 classify CCS by primer blast
 ### 3.1) cat ccs result in bam format from each chunk
 ```
-ls ccs.bam > ccs.bam.list && bamtools merge ccs.bam.list
+ls CHUNK*/ccs.bam > ccs.bam.list && bamtools merge -list ccs.bam.list -out ccs.bam  
 samtools view ccs.bam > ccs.sam
 bamtools convert -format fasta -in ccs.bam -out ccs.fa 
-samtools view ccs.bam | awk '{print $1"\t"length($11)"\t"$13"\t"$14}' | sed 's/np:i://' | sed 's/rq:f://' > ccs.stat 
+samtools view ccs.bam | awk '{print $1"\t"length($11)"\t"$13"\t"$14}' | sed 's/np:i://' | sed 's/rq:f://' > ccs_stat.xls 
 ```
-### 3.2) make primer blast to ccs
+### 3.2) make primer blast to CCS
 ```
 makeblastdb -in primer.fa -dbtype nucl
+
+$ cat primer.fa
 >primer_F
 AAGCAGTGGTATCAACGCAGAGTACGGGGGGGG
 >primer_S
 GTACTCTGCGTTGATACCACTGCTTACTAGT
+
 blastn -query ccs.fa -db primer.fa -outfmt 7 -word_size 5 > mapped.m7 
 ```
-### 3.3) classify ccs by primer
+### 3.3) classify CCS by primer
 ```
 perl classify_by_primer.pl mapped.m7 ccs.fa ./ 
 ```
