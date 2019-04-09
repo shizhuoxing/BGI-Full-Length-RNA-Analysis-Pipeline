@@ -74,9 +74,19 @@ GTACTCTGCGTTGATACCACTGCTTACTAGT
 ```
 perl classify_by_primer.pl mapped.m7 ccs.fa ./ 
 ```
-## Step4 isoform clustering
+## Step4 isoform clustering and polishing the consensus
+### 4.1) make `isoseq_flnc.sam` base on `ccs.sam` and `isoseq_flnc.fasta`
 ```
-perl fl_to_sam.pl ccs.sam isoseq_flnc.fasta > isoseq_flnc.sam 
+perl fl_to_sam.pl ccs.sam isoseq_flnc.fasta > isoseq_flnc.sam   
+samtools view -bS isoseq_flnc.sam > isoseq_flnc.bam
+```
+### 4.2) run `isoseq3` cluster and split cluster result for multi-chunks
+```
+isoseq3 cluster isoseq_flnc.bam unpolished.bam --split-bam 3
+```
+### 4.3) run `isoseq3` polish for each chunk of cluster result
+```
+isoseq3 polish unpolished.0.bam *.subreads.bam polished.0.bam --verbose
 ```
 ## Step5 isoform expression quantify
 
