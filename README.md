@@ -60,14 +60,15 @@ samtools view ccs.bam | awk '{print $1"\t"length($11)"\t"$13"\t"$14}' | sed 's/n
 ### 3.2) make primer blast to CCS
 ```
 makeblastdb -in primer.fa -dbtype nucl
-
+blastn -query ccs.fa -db primer.fa -outfmt 7 -word_size 5 > mapped.m7 
+```
+Here is a PacBio official IsoSeq library construction protocol and `BGI patented multi-isoforms in one ZMW library construction protocol` commonly used primer sequence.
+```
 $ cat primer.fa
 >primer_F
 AAGCAGTGGTATCAACGCAGAGTACGGGGGGGG
 >primer_S
 GTACTCTGCGTTGATACCACTGCTTACTAGT
-
-blastn -query ccs.fa -db primer.fa -outfmt 7 -word_size 5 > mapped.m7 
 ```
 ### 3.3) classify CCS by primer
 ```
