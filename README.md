@@ -71,8 +71,23 @@ AAGCAGTGGTATCAACGCAGAGTACGGGGGGGG
 GTACTCTGCGTTGATACCACTGCTTACTAGT
 ```
 ### 3.3) classify CCS by primer
+Here is a example for classify CCS generate from PacBio official IsoSeq library construction protocol and `BGI patented multi-isoforms in one ZMW library construction protocol`.
 ```
-perl classify_by_primer.pl mapped.m7 ccs.fa ./ 
+perl classify_by_primer.pl -blastm7 mapped.m7 -ccsfa ccs.fa -umilen 6 -min_primerlen 13 -outdir ./ 
+```
+`classify_by_primer.pl` wraps a tool to detection full-length transcript from CCS base on PacBio official IsoSeq library construction protocol and `BGI patented multi-isoforms in one ZMW library construction protocol`.
+```
+$ perl classify_by_primer.pl
+
+Despriprion: BGI version's full-length transcript detection algorithm for PacBio official IsoSeq library construction protocol and BGI patented multi-isoforms in one ZMW library construction protocol.
+Usage: perl classify_by_primer.pl -blastm7 mapped.m7 -ccsfa ccs.fa -umilen 6 -min_primerlen 19 -outdir ./
+
+Options:
+        -blastm7*:              result of primer blast to ccs.fa in blast -outfmt 7 format
+        -ccsfa*:                the ccs.fa you want to classify to get full-length transcript
+        -umilen*:               the UMI length in your library
+        -min_primerlen*:        the minimum primer alignment length in ccs.fa
+        -outdir*:               output directory
 ```
 ## Step4 isoform clustering and polishing the consensus
 ### 4.1) make isoseq_flnc.sam base on ccs.sam and isoseq_flnc.fasta
