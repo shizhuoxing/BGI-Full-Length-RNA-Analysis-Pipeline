@@ -12,10 +12,11 @@ More about the library construction protocol detail and performance can find in 
 * R-3.4.1 or later with ggplot2| gridExtra | grid
 
 # Usage
-export`smrtlink` `blast`to you path first.
+export`smrtlink` `blast` `R` to you path first.
 ```
 export PATH=$PATH:/smrtlink/ssmrtcmds/bin
 export PATH=$PATH:/ncbi-blast-2.2.28+/bin
+export PATH=$PATH:/R-3.1.1/bin/Rscript
 ```
 
 ## Step1 raw data statistics and chunking
