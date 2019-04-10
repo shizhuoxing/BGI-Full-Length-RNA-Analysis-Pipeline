@@ -82,7 +82,7 @@ AAGCAGTGGTATCAACGCAGAGTACGGGGGGGG
 GTACTCTGCGTTGATACCACTGCTTACTAGT
 ```
 ### 3.3) classify CCS by primer
-Here is a example for classify CCS generate from PacBio official IsoSeq library construction protocol and `BGI patented multi-isoforms in one ZMW library construction protocol`.
+Here is an example for classify CCS generate from PacBio official IsoSeq library construction protocol and `BGI patented multi-isoforms in one ZMW library construction protocol`.
 ```
 perl classify_by_primer.pl -blastm7 mapped.m7 -ccsfa ccs.fa -umilen 6 -min_primerlen 13 -outdir ./ 
 ```
