@@ -91,7 +91,7 @@ perl classify_by_primer.pl -blastm7 mapped.m7 -ccsfa ccs.fa -umilen 6 -min_prime
 $ perl classify_by_primer.pl
 
 Despriprion: BGI version's full-length transcript detection algorithm for PacBio official IsoSeq library construction protocol and BGI patented multi-isoforms in one ZMW library construction protocol.
-Usage: perl classify_by_primer.pl -blastm7 mapped.m7 -ccsfa ccs.fa -umilen 6 -min_primerlen 19 -min_isolen 200 -outdir ./
+Usage: perl classify_by_primer.pl -blastm7 mapped.m7 -ccsfa ccs.fa -umilen 8 -min_primerlen 15 -min_isolen 200 -outdir ./
 
 Options:
         -blastm7*:              result of primer blast to ccs.fa in blast -outfmt 7 format
