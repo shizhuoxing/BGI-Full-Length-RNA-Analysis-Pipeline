@@ -29,7 +29,7 @@ perl get_subreads_len.pl subreads.len ./
 ```
 ### 1.2) raw data chunking
 Chunk and parallel processing of the raw data can significantly reduce computing time.   
-If the compute nodes of your computing cluster allow it, the `--chunks` set up to >100 will have an even more significant speedup, `--chunks` set up to 100 can complete CCS analysis in few hours.
+If the compute nodes of your computing cluster allow it, the `--chunks` set up to >100 will have more significant speedup, `--chunks` set up to 100 can complete CCS analysis in few hours.
 ```
 dataset create --type SubreadSet raw.subreadset.xml *.subreads.bam
 dataset split --zmws --chunks 3 raw.subreadset.xml
@@ -113,7 +113,7 @@ isoseq3 cluster isoseq_flnc.bam unpolished.bam --split-bam 3
 ```
 ### 4.3) run isoseq3 polish for each chunk of cluster result
 Chunk and parallel processing of the data can significantly reduce polishing computing time.   
-If the compute nodes of your computing cluster allow it, the `--split-bam` set up to ~50 will have an even more significant speedup, `--split-bam` set up to 50 can complete polish analysis under 1 hours.
+If the compute nodes of your computing cluster allow it, the `--split-bam` set up to ~50 will have more significant speedup, `--split-bam` set up to 50 can complete polish analysis under 1 hours.
 ```
 isoseq3 polish unpolished.0.bam *.subreads.bam polished.0.bam --verbose
 isoseq3 polish unpolished.1.bam *.subreads.bam polished.1.bam --verbose
