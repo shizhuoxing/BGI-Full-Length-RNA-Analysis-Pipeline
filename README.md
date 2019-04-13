@@ -36,11 +36,11 @@ dataset split --zmws --chunks 3 raw.subreadset.xml
 ```
 ## Step2 run CCS for each chunk
 ```
-mkdir CHUNK1 && cd CHUNK1 && perl creat_chunk_rtc.pl raw.chunk1.subreadset.xml ./ > resolved-tool-contract-1.json && ccs --resolved-tool-contract resolved-tool-contract-1.json   
-mkdir CHUNK2 && cd CHUNK2 && perl creat_chunk_rtc.pl raw.chunk2.subreadset.xml ./ > resolved-tool-contract-2.json && ccs --resolved-tool-contract resolved-tool-contract-2.json  
-mkdir CHUNK3 && cd CHUNK3 && perl creat_chunk_rtc.pl raw.chunk3.subreadset.xml ./ > resolved-tool-contract-3.json && ccs --resolved-tool-contract resolved-tool-contract-3.json  
+mkdir CHUNK1 && cd CHUNK1 && perl create_chunk_rtc.pl raw.chunk1.subreadset.xml ./ > resolved-tool-contract-1.json && ccs --resolved-tool-contract resolved-tool-contract-1.json   
+mkdir CHUNK2 && cd CHUNK2 && perl create_chunk_rtc.pl raw.chunk2.subreadset.xml ./ > resolved-tool-contract-2.json && ccs --resolved-tool-contract resolved-tool-contract-2.json  
+mkdir CHUNK3 && cd CHUNK3 && perl create_chunk_rtc.pl raw.chunk3.subreadset.xml ./ > resolved-tool-contract-3.json && ccs --resolved-tool-contract resolved-tool-contract-3.json  
 ```
-Here, the configure file `resolved-tool-contract.json` you can download in this repository must be in the same directory as the `creat_chunk_rtc.pl`.   
+Here, the configure file `resolved-tool-contract.json` you can download in this repository must be in the same directory as the `create_chunk_rtc.pl`.   
 The configure file `resolved-tool-contract.json` contain CCS parameter as follow, you can easily modify it:
 ```
 "options": {
