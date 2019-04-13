@@ -24,8 +24,8 @@ export PATH=$PATH:/R-3.1.1/bin
 ```
 samtools view *.subreads.bam | awk '{print $1"\t"length($10)}' > tmp.len
 sed '1i Subreads\tLength' tmp.len > subreads.len
-perl get_polymer_len.pl subreads.len ./
-perl get_subreads_len.pl subreads.len ./
+perl PolymerraseReads.stat.pl subreads.len ./
+perl SubReads.stat.pl subreads.len ./
 ```
 ### 1.2) raw data chunking
 Chunk and parallel processing of the raw data can significantly reduce computing time.   
