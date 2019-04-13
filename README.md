@@ -73,7 +73,7 @@ samtools view ccs.bam | awk '{print $1"\t"length($11)"\t"$13"\t"$14}' | sed 's/n
 makeblastdb -in primer.fa -dbtype nucl
 blastn -query ccs.fa -db primer.fa -outfmt 7 -word_size 5 > mapped.m7 
 ```
-Here is a PacBio official IsoSeq library construction protocol and `BGI patented multi-isoforms in one ZMW library construction protocol` commonly used primer sequence.
+The following primer sequence is commonly used by PacBio official IsoSeq library construction protocol and `BGI patented multi-transcripts in one ZMW library construction protocol`.
 ```
 $ cat primer.fa
 >primer_F
@@ -82,15 +82,15 @@ AAGCAGTGGTATCAACGCAGAGTACGGGGGGGG
 GTACTCTGCGTTGATACCACTGCTTACTAGT
 ```
 ### 3.3) classify CCS by primer
-Here is an example for classify CCS generate from PacBio official IsoSeq library construction protocol and `BGI patented multi-isoforms in one ZMW library construction protocol`.
+Here is an example for classifying CCS generate from PacBio official IsoSeq library construction protocol and `BGI patented multi-transcripts in one ZMW library construction protocol`.
 ```
 perl classify_by_primer.pl -blastm7 mapped.m7 -ccsfa ccs.fa -umilen 6 -min_primerlen 13 -outdir ./ 
 ```
-`classify_by_primer.pl` wraps a tool to detection full-length transcript from CCS base on PacBio official IsoSeq library construction protocol and `BGI patented multi-isoforms in one ZMW library construction protocol`.
+`classify_by_primer.pl` wraps a tool to detect full-length transcript from CCS base on PacBio official IsoSeq library construction protocol and `BGI patented multi-transcripts in one ZMW library construction protocol`.
 ```
 $ perl classify_by_primer.pl
 
-Despriprion: BGI version's full-length transcript detection algorithm for PacBio official IsoSeq library construction protocol and BGI patented multi-isoforms in one ZMW library construction protocol.
+Despriprion: BGI version's full-length transcript detection algorithm for PacBio official IsoSeq library construction protocol and BGI patented multi-transcripts in one ZMW library construction protocol.
 Usage: perl classify_by_primer.pl -blastm7 mapped.m7 -ccsfa ccs.fa -umilen 8 -min_primerlen 15 -min_isolen 200 -outdir ./
 
 Options:
@@ -101,17 +101,17 @@ Options:
         -min_isolen*:           the minimum output's transcript length whithout polyA tail
         -outdir*:               output directory
 ```
-## Step4 isoform clustering and polishing the consensus
-### 4.1) make isoseq_flnc.sam base on ccs.sam and isoseq_flnc.fasta
+## Step4 isoform clustering and polish the consensus
+### 4.1) make isoseq_flnc.sam based on ccs.sam and isoseq_flnc.fasta
 ```
 perl fl_to_sam.pl ccs.sam isoseq_flnc.fasta > isoseq_flnc.sam   
 samtools view -bS isoseq_flnc.sam > isoseq_flnc.bam
 ```
-### 4.2) run isoseq3 cluster and split cluster result for multi-chunks
+### 4.2) run `isoseq3 cluster` and split cluster result for multi-chunks
 ```
 isoseq3 cluster isoseq_flnc.bam unpolished.bam --split-bam 3
 ```
-### 4.3) run isoseq3 polish for each chunk of cluster result
+### 4.3) run `isoseq3 polish` for each chunk of cluster result
 Chunk and parallel processing of the data can significantly reduce polishing computing time.   
 If the compute nodes of your computing cluster allow it, the `--split-bam` set up to ~50 will have more significant speedup, `--split-bam` set up to 50 can complete polish analysis under 1 hours.
 ```
@@ -119,7 +119,7 @@ isoseq3 polish unpolished.0.bam *.subreads.bam polished.0.bam --verbose
 isoseq3 polish unpolished.1.bam *.subreads.bam polished.1.bam --verbose
 isoseq3 polish unpolished.2.bam *.subreads.bam polished.2.bam --verbose
 ```
-## Step5 isoform expression quantify and plotting
+## Step5 quantify and plot isoform expression
 ```
 ls polished.*.bam > polished.bam.list && bamtools merge -list polished.bam.list -out polish.bam
 samtools view polish.bam > polish.sam
