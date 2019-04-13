@@ -24,7 +24,7 @@ export PATH=$PATH:/R-3.1.1/bin
 ```
 samtools view *.subreads.bam | awk '{print $1"\t"length($10)}' > tmp.len
 sed '1i Subreads\tLength' tmp.len > subreads.len
-perl PolymerraseReads.stat.pl subreads.len ./
+perl PolymeraseReads.stat.pl subreads.len ./
 perl SubReads.stat.pl subreads.len ./
 ```
 ### 1.2) raw data chunking
