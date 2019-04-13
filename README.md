@@ -16,7 +16,7 @@ export`smrtlink` `blast` `R` to you path first.
 ```
 export PATH=$PATH:/smrtlink/smrtcmds/bin
 export PATH=$PATH:/ncbi-blast-2.2.28+/bin
-export PATH=$PATH:/R-3.1.1/bin/Rscript
+export PATH=$PATH:/R-3.1.1/bin
 ```
 
 ## Step1 raw data statistics and chunking
