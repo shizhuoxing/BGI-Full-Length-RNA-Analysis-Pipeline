@@ -7,7 +7,7 @@ Here, we provide a command line's version bioinformatics pipeline for PacBio Iso
 More about the library construction protocol detail and performance can find in this wiki：https://github.com/shizhuoxing/Full-Length-RNA-Analysis-Best-Practice/wiki
 
 # Dependencies   
-* SMRTlink 6.0 or later `you can install it in light way: smrtlink-*.run --rootdir smrtlink --smrttools-only`   
+* SMRTlink 6.0 or later `you can install it in light way: smrtlink_*.run --rootdir smrtlink --smrttools-only`   
 * ncbi-blast-2.2.26+ or later   
 * R-3.4.1 or later with ggplot2| gridExtra | grid
 
