@@ -4,7 +4,7 @@
 As we all know, with the progress of single molecule sequencing technology, full-length transcript sequencing will become more popular. Compared to the second generation sequencing technology, the third generation sequencing technology can detect full-length transcript from 5-end to polyA tail, this enables us to take the more accurate way to quantifying gene and isoform expression, and can take more accurate way to research isoform structure, such as alternative splicing(AS), alternative polyadenylation(APA), allele specific expression(ASE), transcription start site(TSS), fusion gene, UTR length and UTR secondary structure, etc.   
 Here, we provide a command line's version bioinformatics pipeline for PacBio IsoSeq data analysis from raw `subreads.bam`, this pipeline works well in both PacBio official IsoSeq library construction protocol and **BGI patented** `multi-transcripts in one ZMW library (MTZL) construction protocol` and `full-length polyA tail detection library construction protocol`. This pipeline contains quality control, basic statistics, full-length transcripts identification, isoform clustering, error correction and isoform quantification, which is free of compilation and very easy to use.   
 
-More about the library construction protocol detail and performance can find in this wiki：https://github.com/shizhuoxing/Full-Length-RNA-Analysis-Best-Practice/wiki
+More about the library construction protocol detail and performance can find in this wiki：https://github.com/shizhuoxing/BGI-Full-Length-RNA-Analysis-Pipeline/wiki
 
 # Dependencies   
 * SMRTlink 6.0 or later `you can install it in light way: smrtlink_*.run --rootdir smrtlink --smrttools-only`   
