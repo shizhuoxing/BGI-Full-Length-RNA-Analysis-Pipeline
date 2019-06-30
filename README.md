@@ -36,11 +36,11 @@ dataset split --zmws --chunks 3 raw.subreadset.xml
 ```
 ## Step2 run CCS for each chunk
 ```
-mkdir CHUNK1 && cd CHUNK1 && perl create_chunk_rtc.pl raw.chunk1.subreadset.xml ./ > resolved-tool-contract-1.json && ccs --resolved-tool-contract resolved-tool-contract-1.json   
-mkdir CHUNK2 && cd CHUNK2 && perl create_chunk_rtc.pl raw.chunk2.subreadset.xml ./ > resolved-tool-contract-2.json && ccs --resolved-tool-contract resolved-tool-contract-2.json  
-mkdir CHUNK3 && cd CHUNK3 && perl create_chunk_rtc.pl raw.chunk3.subreadset.xml ./ > resolved-tool-contract-3.json && ccs --resolved-tool-contract resolved-tool-contract-3.json  
+mkdir CHUNK1 && cd CHUNK1 && perl create_chunk_rtc.pl -json resolved-tool-contract.json -xml raw.chunk0.subreadset.xml -outdir ./ > resolved-tool-contract-1.json && ccs --resolved-tool-contract resolved-tool-contract-1.json
+mkdir CHUNK2 && cd CHUNK2 && perl create_chunk_rtc.pl -json resolved-tool-contract.json -xml raw.chunk1.subreadset.xml -outdir ./ > resolved-tool-contract-2.json && ccs --resolved-tool-contract resolved-tool-contract-2.json
+mkdir CHUNK3 && cd CHUNK3 && perl create_chunk_rtc.pl -json resolved-tool-contract.json -xml raw.chunk2.subreadset.xml -outdir ./ > resolved-tool-contract-3.json && ccs --resolved-tool-contract resolved-tool-contract-3.json
 ```
-Here, the configure file `resolved-tool-contract.json` you can download in this repository must be in the same directory as the `create_chunk_rtc.pl`.   
+Here, the configure file `resolved-tool-contract.json` you can download in this repository, it's an input for the `create_chunk_rtc.pl`.   
 The configure file `resolved-tool-contract.json` contain CCS parameter as follow, you can easily modify it:
 ```
 "options": {
@@ -81,6 +81,14 @@ AAGCAGTGGTATCAACGCAGAGTACGGGGGGGG
 >primer_S
 GTACTCTGCGTTGATACCACTGCTTACTAGT
 ```
+The following primer sequence is used by `BGI patented full-length polyA tail detection library construction protocol`.
+```
+$ cat primer.fa
+>primer_F
+AAGCAGTGGTATCAACGCAGAGTAC
+>primer_S
+AAGCAGTGGTATCAACGCAGAGTACATCGATCCCCCCCCCCCCTTT
+```
 ### 3.3) classify CCS by primer
 Here is an example for classifying CCS generate from PacBio official IsoSeq library construction protocol and `BGI patented multi-transcripts in one ZMW library construction protocol`.
 ```
@@ -100,6 +108,10 @@ Options:
         -min_primerlen*:        the minimum primer alignment length in ccs.fa
         -min_isolen*:           the minimum output's transcript length whithout polyA tail
         -outdir*:               output directory
+```
+Here is an example for classifying CCS generate from `BGI patented full-length polyA tail detection library construction protocol`, the parameters and usage are the same as in `classify_by_primer.pl`.
+```
+perl classify_by_primer.fullpa.pl -blastm7 mapped.m7 -ccsfa ccs.fa -umilen 6 -min_primerlen 13 -min_isolen 200 -outdir ./ 
 ```
 ## Step4 isoform clustering and polish the consensus
 ### 4.1) make isoseq_flnc.sam based on ccs.sam and isoseq_flnc.fasta
