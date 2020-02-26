@@ -2,13 +2,13 @@
 *This is a Full-Length RNA Analysis pipeline developted by BGI RD group.*
 
 As we all know, with the progress of single molecule sequencing technology, full-length transcript sequencing will become more popular. Compared to the second generation sequencing technology, the third generation sequencing technology can detect full-length transcript from 5-end to polyA tail, this enables us to take the more accurate way to quantifying gene and isoform expression, and can take more accurate way to research isoform structure, such as alternative splicing(AS), alternative polyadenylation(APA), allele specific expression(ASE), transcription start site(TSS), fusion gene, UTR length and UTR secondary structure, etc.   
-Here, we provide a command line's version bioinformatics pipeline for PacBio IsoSeq data analysis from raw `subreads.bam`, this pipeline works well in both PacBio official IsoSeq library construction protocol and **BGI patented** `multi-transcripts in one ZMW library (MTZL) construction protocol` and `full-length polyA tail detection library construction protocol`. This pipeline contains quality control, basic statistics, full-length transcripts identification, isoform clustering, error correction and isoform quantification, which is free of compilation and very easy to use.   
+Here, we provide a command line's version bioinformatics pipeline for PacBio IsoSeq data analysis from raw `subreads.bam`, this pipeline works well in both PacBio official IsoSeq library construction protocol and **BGI patented** `multi-transcripts in one ZMW library (MTZL) construction protocol` and `full-length polyA tail detection library construction protocol`. This pipeline contains quality control, basic statistics, full-length transcripts identification, isoform clustering, error correction and isoform quantification, which is free of compilation and very easy to use.
 
 More about the library construction protocol detail and performance can find in this wiki：https://github.com/shizhuoxing/BGI-Full-Length-RNA-Analysis-Pipeline/wiki
 
-# Dependencies   
-* SMRTlink 6.0 or later `you can install it in light way: smrtlink_*.run --rootdir smrtlink --smrttools-only`   
-* ncbi-blast-2.2.26+ or later   
+# Dependencies
+* SMRTlink 8.0 or later `you can install it in light way: smrtlink_*.run --rootdir smrtlink --smrttools-only`
+* ncbi-blast-2.2.26+ or later
 * R-3.4.1 or later with ggplot2| gridExtra | grid
 
 # Usage
@@ -19,51 +19,22 @@ export PATH=$PATH:/ncbi-blast-2.2.28+/bin
 export PATH=$PATH:/R-3.1.1/bin
 ```
 
-## Step1 raw data statistics and chunking
-### 1.1) get raw data statistics
+## Step1 raw data statistics
 ```
 samtools view *.subreads.bam | awk '{print $1"\t"length($10)}' > tmp.len
 sed '1i Subreads\tLength' tmp.len > subreads.len
 perl PolymeraseReads.stat.pl subreads.len ./
 perl SubReads.stat.pl subreads.len ./
 ```
-### 1.2) raw data chunking
-Chunk and parallel processing of the raw data can significantly reduce computing time.   
-If the compute nodes of your computing cluster allow it, the `--chunks` set up to >100 will have more significant speedup, `--chunks` set up to 100 can complete CCS analysis in few hours.
+## Step2 run CCS
 ```
-dataset create --type SubreadSet raw.subreadset.xml *.subreads.bam
-dataset split --zmws --chunks 3 raw.subreadset.xml
+ccs *.subreads.bam ccs.bam --min-passes 0 --min-length 50 --max-length 21000 --min-rq 0.75 -j 4
 ```
-## Step2 run CCS for each chunk
-```
-mkdir CHUNK1 && cd CHUNK1 && perl create_chunk_rtc.pl -json resolved-tool-contract.json -xml raw.chunk0.subreadset.xml -outdir ./ > resolved-tool-contract-1.json && ccs --resolved-tool-contract resolved-tool-contract-1.json
-mkdir CHUNK2 && cd CHUNK2 && perl create_chunk_rtc.pl -json resolved-tool-contract.json -xml raw.chunk1.subreadset.xml -outdir ./ > resolved-tool-contract-2.json && ccs --resolved-tool-contract resolved-tool-contract-2.json
-mkdir CHUNK3 && cd CHUNK3 && perl create_chunk_rtc.pl -json resolved-tool-contract.json -xml raw.chunk2.subreadset.xml -outdir ./ > resolved-tool-contract-3.json && ccs --resolved-tool-contract resolved-tool-contract-3.json
-```
-Here, the configure file `resolved-tool-contract.json` you can download in this repository, it's an input for the `create_chunk_rtc.pl`.   
-The configure file `resolved-tool-contract.json` contain CCS parameter as follow, you can easily modify it:
-```
-"options": {
-              "pbccs.task_options.by_strand": false,
-              "pbccs.task_options.max_drop_fraction": 0.8,
-              "pbccs.task_options.max_length": 20000,
-              "pbccs.task_options.min_length": 100,
-              "pbccs.task_options.min_passes": 0,
-              "pbccs.task_options.min_predicted_accuracy": 0.75,
-              "pbccs.task_options.min_read_score": 0.65,
-              "pbccs.task_options.min_snr": 3.75,
-              "pbccs.task_options.min_zscore": -9999.0,
-              "pbccs.task_options.model_path": "",
-              "pbccs.task_options.model_spec": "",
-              "pbccs.task_options.polish": true,
-              "pbccs.task_options.report_file": "ccs_report.txt",
-              "pbccs.task_options.num_threads": 8
-},
-```
+Start from SMRTlink8.0, CCS4.0 significantly speeds up the analysis and can be easily parallelized by using `--chunk`. 
+
 ## Step3 classify CCS by primer blast
 ### 3.1) cat ccs result in bam format from each chunk
 ```
-ls CHUNK*/ccs.bam > ccs.bam.list && bamtools merge -list ccs.bam.list -out ccs.bam  
 samtools view ccs.bam > ccs.sam
 bamtools convert -format fasta -in ccs.bam -out ccs.fa 
 samtools view ccs.bam | awk '{print $1"\t"length($11)"\t"$13"\t"$14}' | sed 's/np:i://' | sed 's/rq:f://' > ccs_stat.xls 
@@ -92,14 +63,14 @@ AAGCAGTGGTATCAACGCAGAGTACATCGATCCCCCCCCCCCCTTT
 ### 3.3) classify CCS by primer
 Here is an example for classifying CCS generate from PacBio official IsoSeq library construction protocol and `BGI patented multi-transcripts in one ZMW library construction protocol`.
 ```
-perl classify_by_primer.pl -blastm7 mapped.m7 -ccsfa ccs.fa -umilen 6 -min_primerlen 13 -min_isolen 200 -outdir ./ 
+classify_by_primer -blastm7 mapped.m7 -ccsfa ccs.fa -umilen 8 -min_primerlen 16 -min_isolen 200 -outdir ./ 
 ```
-`classify_by_primer.pl` wraps a tool to detect full-length transcript from CCS base on PacBio official IsoSeq library construction protocol and `BGI patented multi-transcripts in one ZMW library construction protocol`.
+`classify_by_primer` wraps a tool to detect full-length transcript from CCS base on PacBio official IsoSeq library construction protocol and `BGI patented multi-transcripts in one ZMW library construction protocol`.
 ```
-$ perl classify_by_primer.pl
+$ classify_by_primer -h
 
 Despriprion: BGI version's full-length transcript detection algorithm for PacBio official IsoSeq library construction protocol and BGI patented multi-transcripts in one ZMW library construction protocol.
-Usage: perl classify_by_primer.pl -blastm7 mapped.m7 -ccsfa ccs.fa -umilen 8 -min_primerlen 15 -min_isolen 200 -outdir ./
+Usage: classify_by_primer -blastm7 mapped.m7 -ccsfa ccs.fa -umilen 8 -min_primerlen 15 -min_isolen 200 -outdir ./
 
 Options:
         -blastm7*:              result of primer blast to ccs.fa in blast -outfmt 7 format
@@ -109,9 +80,9 @@ Options:
         -min_isolen*:           the minimum output's transcript length whithout polyA tail
         -outdir*:               output directory
 ```
-Here is an example for classifying CCS generate from `BGI patented full-length polyA tail detection library construction protocol`, the parameters and usage are the same as in `classify_by_primer.pl`.
+Here is an example for classifying CCS generate from `BGI patented full-length polyA tail detection library construction protocol`, the parameters and usage are the same as in `classify_by_primer`.
 ```
-perl classify_by_primer.fullpa.pl -blastm7 mapped.m7 -ccsfa ccs.fa -umilen 6 -min_primerlen 13 -min_isolen 200 -outdir ./ 
+classify_by_primer.fullpa -blastm7 mapped.m7 -ccsfa ccs.fa -umilen 8 -min_primerlen 16 -min_isolen 200 -outdir ./ 
 ```
 ## Step4 isoform clustering and polish the consensus
 ### 4.1) make isoseq_flnc.sam based on ccs.sam and isoseq_flnc.fasta
