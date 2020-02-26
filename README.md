@@ -36,8 +36,7 @@ Start from SMRTlink8.0, CCS4.0 significantly speeds up the analysis and can be e
 ### 3.1) cat ccs result in bam format from each chunk
 ```
 samtools view ccs.bam > ccs.sam
-bamtools convert -format fasta -in ccs.bam -out ccs.fa 
-samtools view ccs.bam | awk '{print $1"\t"length($11)"\t"$13"\t"$14}' | sed 's/np:i://' | sed 's/rq:f://' > ccs_stat.xls 
+samtools view ccs.bam | awk '{print ">"$1"\n"$10}' > ccs.fa 
 ```
 ### 3.2) make primer blast to CCS
 ```
