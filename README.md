@@ -48,7 +48,7 @@ The following primer sequence is commonly used by PacBio official IsoSeq library
 ```
 $ cat primer.fa
 >primer_F
-AAGCAGTGGTATCAACGCAGAGTACGGGGGGGG
+AAGCAGTGGTATCAACGCAGAGTACATGGGGGGGG
 >primer_S
 GTACTCTGCGTTGATACCACTGCTTACTAGT
 ```
