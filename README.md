@@ -19,7 +19,7 @@ export PATH=$PATH:/ncbi-blast-2.2.28+/bin
 export PATH=$PATH:/R-3.1.1/bin
 ```
 
-## Step1 raw data statistics
+## Step1 raw data statistics (optional)
 ```
 samtools view *.subreads.bam | awk '{print $1"\t"length($10)}' > tmp.len
 sed '1i Subreads\tLength' tmp.len > subreads.len
