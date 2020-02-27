@@ -83,7 +83,7 @@ Here is an example for classifying CCS generate from `BGI patented full-length p
 ```
 classify_by_primer.fullpa -blastm7 mapped.m7 -ccsfa ccs.fa -umilen 8 -min_primerlen 16 -min_isolen 200 -outdir ./ 
 ```
-## Step4 isoform clustering and polish the consensus
+## Step4 isoform clustering and polish the consensus (optional)
 ### 4.1) make isoseq_flnc.sam based on ccs.sam and isoseq_flnc.fasta
 ```
 flnc2sam ccs.sam isoseq_flnc.fasta > isoseq_flnc.sam   
