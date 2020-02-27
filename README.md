@@ -86,7 +86,7 @@ classify_by_primer.fullpa -blastm7 mapped.m7 -ccsfa ccs.fa -umilen 8 -min_primer
 ## Step4 isoform clustering and polish the consensus
 ### 4.1) make isoseq_flnc.sam based on ccs.sam and isoseq_flnc.fasta
 ```
-perl fl_to_sam.pl ccs.sam isoseq_flnc.fasta > isoseq_flnc.sam   
+flnc2sam ccs.sam isoseq_flnc.fasta > isoseq_flnc.sam   
 samtools view -bS isoseq_flnc.sam > isoseq_flnc.bam
 ```
 ### 4.2) run `isoseq3 cluster` and split cluster result for multi-chunks
