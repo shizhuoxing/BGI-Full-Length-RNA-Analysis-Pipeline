@@ -102,8 +102,9 @@ isoseq3 polish unpolished.1.bam *.subreads.bam polished.1.bam --verbose
 isoseq3 polish unpolished.2.bam *.subreads.bam polished.2.bam --verbose
 ```
 
+***We recommend making isoforms Cluster and Polish as the optional step. Cluster and Polish can removed allele specific sequence variation, because this step takes the FLNC and clusters the isoforms by similarity and makes a multiple alignment of each cluster and performs error correction using this alignment.***
+
 ***As the Sequel and Sequel II system improve the polymerase read length, the accuracy of the CCS got a big promotion, HiFi reads (QV>0.99) the proportion of improved a lot, in fact, in the case of a reference genome, now we don't need more time to transcribe this clustering and error correction, directly take transcription the alignment to reference genome and then filtered according to compare the quality is ok***
-***This step takes the FLNC and clusters the transcript sequences by similarity. It then makes a multiple alignment of each cluster and performs error correction using this alignment. This step is optional and if you are interested in allele specific expression/transcript phasing, you should not run this step as it can removed allele specific sequence variation.***
 
 # Contact
 If you have any questions, encounter problems or potential bugs, don’t hesitate to contact us. Either report issues on github or write an email to:
