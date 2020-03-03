@@ -2,7 +2,7 @@
 *This is a Full-Length RNA Analysis pipeline developted by BGI RD group.*
 
 As we all know, with the progress of single molecule sequencing technology, full-length transcript sequencing will become more popular. Compared to the second generation sequencing technology, the third generation sequencing technology can detect full-length transcript from 5-end to polyA tail, this enables us to take the more accurate way to quantifying gene and isoform expression, and can take more accurate way to research isoform structure, such as alternative splicing(AS), alternative polyadenylation(APA), allele specific expression(ASE), transcription start site(TSS), fusion gene, UTR length and UTR secondary structure, etc.   
-Here, we provide a command line's version bioinformatics pipeline for PacBio IsoSeq data analysis from raw `subreads.bam`, this pipeline works well in both PacBio official IsoSeq library construction protocol and **BGI patented** `multi-transcripts in one ZMW library (MTZL) construction protocol` and `full-length polyA tail detection library construction protocol`. This pipeline contains quality control, basic statistics, full-length transcripts identification, isoform clustering, error correction and isoform quantification, which is free of compilation and very easy to use.
+Here, we provide a command line's version bioinformatics pipeline for PacBio IsoSeq data analysis from raw `subreads.bam`, this pipeline works well in both PacBio official IsoSeq library construction protocol and **BGI patented** `multi-transcripts in one ZMW library (MTZL) construction protocol` and `full-length polyA tail detection library construction protocol`. This pipeline contains quality control, basic statistics, full-length transcripts identification, UMI detection, isoform clustering, error correction and isoform quantification, which is free of compilation and very easy to use.
 
 More about the library construction protocol detail and performance can find in this wiki：https://github.com/shizhuoxing/BGI-Full-Length-RNA-Analysis-Pipeline/wiki
 
@@ -101,6 +101,9 @@ isoseq3 polish unpolished.0.bam *.subreads.bam polished.0.bam --verbose
 isoseq3 polish unpolished.1.bam *.subreads.bam polished.1.bam --verbose
 isoseq3 polish unpolished.2.bam *.subreads.bam polished.2.bam --verbose
 ```
+
+***As the Sequel and Sequel II system improve the polymerase read length, the accuracy of the CCS got a big promotion, HiFi reads (QV>0.99) the proportion of improved a lot, in fact, in the case of a reference genome, now we don't need more time to transcribe this clustering and error correction, directly take transcription the alignment to reference genome and then filtered according to compare the quality is ok***
+***This step takes the FLNC and clusters the transcript sequences by similarity. It then makes a multiple alignment of each cluster and performs error correction using this alignment. This step is optional and if you are interested in allele specific expression/transcript phasing, you should not run this step as it can removed allele specific sequence variation.***
 
 # Contact
 If you have any questions, encounter problems or potential bugs, don’t hesitate to contact us. Either report issues on github or write an email to:
