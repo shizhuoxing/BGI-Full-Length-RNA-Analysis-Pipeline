@@ -1,7 +1,7 @@
 # Full-Length-RNA-Analysis-Best-Practice
 *This is a Full-Length RNA Analysis pipeline developted by BGI RD group.*
 
-As we all know, with the progress of single molecule sequencing technology, full-length transcript sequencing will become more popular. Compared to the second generation sequencing technology, the third generation sequencing technology can detect full-length transcript from 5-end to polyA tail, this enables us to take the more accurate way to quantifying gene and isoform expression, and can take more accurate way to research isoform structure, such as alternative splicing(AS), alternative polyadenylation(APA), allele specific expression(ASE), transcription start site(TSS), fusion gene, UTR length and UTR secondary structure, etc.   
+As we all know, with the progress of single molecule sequencing technology, full-length transcript sequencing will become more popular. Compared to the second generation sequencing technology, the third generation sequencing technology can detect full-length transcript from 5-end to polyA tail, this enables us to take the more accurate way to quantifying gene and isoform expression, and can take more accurate way to research isoform structure, such as alternative splicing(AS), alternative polyadenylation(APA), allele specific expression(ASE), transcription start site(TSS), fusion gene, UTR length and UTR secondary structure, etc.
 Here, we provide a command line's version bioinformatics pipeline for PacBio IsoSeq data analysis from raw `subreads.bam`, this pipeline works well in both PacBio official IsoSeq library construction protocol and **BGI patented** `multi-transcripts in one ZMW library (MTZL) construction protocol` and `full-length polyA tail detection library construction protocol`. This pipeline contains quality control, basic statistics, full-length transcripts identification, UMI detection, isoform clustering, error correction and isoform quantification, which is free of compilation and very easy to use.
 
 More about the library construction protocol detail and performance can find in this wiki：https://github.com/shizhuoxing/BGI-Full-Length-RNA-Analysis-Pipeline/wiki
@@ -30,18 +30,18 @@ perl SubReads.stat.pl subreads.len ./
 ```
 ccs *.subreads.bam ccs.bam --min-passes 0 --min-length 50 --max-length 21000 --min-rq 0.75 -j 4
 ```
-Start from SMRTlink8.0, CCS4.0 significantly speeds up the analysis and can be easily parallelized by using `--chunk`. 
+Start from SMRTlink8.0, CCS4.0 significantly speeds up the analysis and can be easily parallelized by using `--chunk`.
 
 ## Step3 classify CCS by primer blast
 ### 3.1) cat ccs result in bam format from each chunk
 ```
 samtools view ccs.bam > ccs.sam
-samtools view ccs.bam | awk '{print ">"$1"\n"$10}' > ccs.fa 
+samtools view ccs.bam | awk '{print ">"$1"\n"$10}' > ccs.fa
 ```
 ### 3.2) make primer blast to CCS
 ```
 makeblastdb -in primer.fa -dbtype nucl
-blastn -query ccs.fa -db primer.fa -outfmt 7 -word_size 5 > mapped.m7 
+blastn -query ccs.fa -db primer.fa -outfmt 7 -word_size 5 > mapped.m7
 ```
 The following primer sequence is commonly used by PacBio official IsoSeq library construction protocol and `BGI patented multi-transcripts in one ZMW library construction protocol`.
 ```
@@ -62,7 +62,7 @@ AAGCAGTGGTATCAACGCAGAGTACATCGATCCCCCCCCCCCCTTT
 ### 3.3) classify CCS by primer
 Here is an example for classifying CCS generate from PacBio official IsoSeq library construction protocol and `BGI patented multi-transcripts in one ZMW library construction protocol`.
 ```
-classify_by_primer -blastm7 mapped.m7 -ccsfa ccs.fa -umilen 8 -min_primerlen 16 -min_isolen 200 -outdir ./ 
+classify_by_primer -blastm7 mapped.m7 -ccsfa ccs.fa -umilen 8 -min_primerlen 16 -min_isolen 200 -outdir ./
 ```
 `classify_by_primer` wraps a tool to detect full-length transcript from CCS base on PacBio official IsoSeq library construction protocol and `BGI patented multi-transcripts in one ZMW library construction protocol`.
 ```
@@ -81,12 +81,12 @@ Options:
 ```
 Here is an example for classifying CCS generate from `BGI patented full-length polyA tail detection library construction protocol`, the parameters and usage are the same as in `classify_by_primer`.
 ```
-classify_by_primer.fullpa -blastm7 mapped.m7 -ccsfa ccs.fa -umilen 8 -min_primerlen 16 -min_isolen 200 -outdir ./ 
+classify_by_primer.fullpa -blastm7 mapped.m7 -ccsfa ccs.fa -umilen 8 -min_primerlen 16 -min_isolen 200 -outdir ./
 ```
 ## Step4 isoform clustering and polish the consensus (optional)
 ### 4.1) make isoseq_flnc.sam based on ccs.sam and isoseq_flnc.fasta
 ```
-flnc2sam ccs.sam isoseq_flnc.fasta > isoseq_flnc.sam   
+flnc2sam ccs.sam isoseq_flnc.fasta > isoseq_flnc.sam
 samtools view -bS isoseq_flnc.sam > isoseq_flnc.bam
 ```
 ### 4.2) run `isoseq3 cluster` and split cluster result for multi-chunks
@@ -94,7 +94,7 @@ samtools view -bS isoseq_flnc.sam > isoseq_flnc.bam
 isoseq3 cluster isoseq_flnc.bam unpolished.bam --split-bam 3
 ```
 ### 4.3) run `isoseq3 polish` for each chunk of cluster result
-Chunk and parallel processing of the data can significantly reduce polishing computing time.   
+Chunk and parallel processing of the data can significantly reduce polishing computing time.
 If the compute nodes of your computing cluster allow it, the `--split-bam` set up to ~50 will have more significant speedup, `--split-bam` set up to 50 can complete polish analysis under 1 hours.
 ```
 isoseq3 polish unpolished.0.bam *.subreads.bam polished.0.bam --verbose
