@@ -8,7 +8,9 @@ Here, we provide a command line's version bioinformatics pipeline for PacBio Iso
 This pipeline contains quality control, basic statistics, full-length transcripts identification, UMI detection, isoform clustering, error correction and isoform quantification, which is free of compilation and very easy to use.
 
 More about the library construction protocol detail and performance can find in this wiki：https://github.com/shizhuoxing/BGI-Full-Length-RNA-Analysis-Pipeline/wiki
+
 For citation and more detailed information of IsoLink-seq, please see our preprint paper: [HIT-scISOseq: High-throughput and High-accuracy Single-cell Full-length Isoform Sequencing for Corneal Epithelium](https://www.biorxiv.org/content/10.1101/2020.07.27.222349v1.full)
+
 For citation and more detailed information of PAPA-seq, please see our preprint paper: [miRNA-dependent poly(A) length control in uncoupling transcription and translation of haploid male germ cells](https://www.biorxiv.org/content/10.1101/2021.03.01.433315v1.full)
 
 # Dependencies
